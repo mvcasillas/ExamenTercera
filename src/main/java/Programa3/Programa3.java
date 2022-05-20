@@ -64,8 +64,16 @@ public class Programa3 {
                 //System.out.println(nombre);
                 int bombonesParaTi = (int)(Math.random()*mBombones);
                 //System.out.println(bombonesParaTi);
-                alumnosMap.put(nombre, bombonesParaTi);
-                contador++;
+                
+                //Compruebo si ya había alguien con ese nombre,
+                //Si no estaba, lo añado y le doy al contador
+                //Si estaba vuelvo al inicio del bucle sin sumar al contador
+                //Para generar otro número aleatorio
+                if(!alumnosMap.containsKey(nombre)){
+                    alumnosMap.put(nombre, bombonesParaTi);
+                    contador++;
+                }
+                
             }
             
             //lectorRandom.close();
