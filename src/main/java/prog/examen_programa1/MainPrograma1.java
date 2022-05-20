@@ -15,35 +15,92 @@ import java.util.Scanner;
  */
 public class MainPrograma1 {
     
-    public static double getMaximaAlta(ArrayList<String[]> listaEntradas){
-        double tempMaximaAlta=0;
+    public static double[] getMaximas(ArrayList<String[]> listaEntradas){
+        double tempMaximas[] = {0, 100, 0};
+        //Posicion 0 es la alta, 1 la baja y 2 la media
+        //Guardo los 3 valores en un array para tener que recorrer la lista 1 vez en lugar de 3
+        
+        int contador=0;
         for(String[] entrada: listaEntradas){
             //Paso la posición de la máxima (1) a double para poder compararla
             double leido= Double.parseDouble(entrada[1]);
             
             //Compruebo si es mayor que la que tengo guardada, si lo es, sobreescribo
-            if(leido>tempMaximaAlta){
-                tempMaximaAlta=leido;
+            if(leido>tempMaximas[0]){
+                tempMaximas[0]=leido;
             }
-        }
-        return tempMaximaAlta;  
-    }
-    
-        public static double getMaximaBaja(ArrayList<String[]> listaEntradas){
-        double tempMaximaBaja=100;
-        for(String[] entrada: listaEntradas){
-            //Paso la posición de la máxima (1) a double para poder compararla
-            double leido= Double.parseDouble(entrada[1]);
             
             //Compruebo si es menor que la que tengo guardada, si lo es, sobreescribo
-            if(leido<tempMaximaBaja){
-                tempMaximaBaja=leido;
+            if(leido<tempMaximas[1]){
+                tempMaximas[1]=leido;
             }
+            
+            tempMaximas[2]+=leido;
+            contador++;
         }
-        return tempMaximaBaja;  
+        //Una vez acabado el bucle hago la media
+        tempMaximas[2]=tempMaximas[2]/contador;
+        
+        return tempMaximas;  
     }
     
+    public static double[] getMinimas(ArrayList<String[]> listaEntradas){
+        double tempMinimas[] = {0, 100, 0};
+        //Posicion 0 es la alta, 1 la baja y 2 la media
+        //Guardo los 3 valores en un array para tener que recorrer la lista 1 vez en lugar de 3
+        
+        int contador=0;
+        for(String[] entrada: listaEntradas){
+            //Paso la posición de la mínima (2) a double para poder compararla
+            double leido= Double.parseDouble(entrada[2]);
+            
+            //Compruebo si es mayor que la que tengo guardada, si lo es, sobreescribo
+            if(leido>tempMinimas[0]){
+                tempMinimas[0]=leido;
+            }
+            
+            //Compruebo si es menor que la que tengo guardada, si lo es, sobreescribo
+            if(leido<tempMinimas[1]){
+                tempMinimas[1]=leido;
+            }
+            
+            tempMinimas[2]+=leido;
+            contador++;
+        }
+        //Una vez acabado el bucle hago la media
+        tempMinimas[2]=tempMinimas[2]/contador;
+        
+        return tempMinimas;  
+    }
+ 
+    public static double mediaTemperaturas(double temp1, double temp2){
+        return (temp1+temp2)/2;
+    }
     
+    public static String getDiferenciaT(ArrayList<String[]> listaEntradas){
+        double diferenciaMayor=0;
+        String fechaDiferencia="";
+        
+        for(String[] entrada: listaEntradas){
+            //Paso la posición de la máxima (1) y mínima(2) a double para poder compararla
+            double max= Double.parseDouble(entrada[1]);
+            double min= Double.parseDouble(entrada[2]);
+            
+            //Si la diferencia es mayor que la guardada, sobreescribe
+            if((max-min)>diferenciaMayor){
+                diferenciaMayor=(max-min);
+                //En la posición 0 están las fechas así que la guardo
+                fechaDiferencia=entrada[0];
+            }
+            
+        }
+        //Una vez comprobada toda la lista devuelve
+        return String.format("%.2f", diferenciaMayor)+"     "+fechaDiferencia;
+    }
+   
+    
+    //----------------------------------------------------------------------------------
+    //-------------------------------------- MAIN ---------------------------------------
     public static void main(String[] args) {
         
         //Pide al usuario por teclado el nombre de un archivo hasta que dé un nombre de archivo correcto
@@ -67,18 +124,20 @@ public class MainPrograma1 {
             }
             lectorArchivo.close();
             
-            double tMaximaAlta, tMaximaBaja, tMaximaMedia, tMinimaAlta, tMinimaBaja, tMinimaMedia, tIntermediaMedia, mayorDiferenciaT;
-            String fechaMayorDiferencia;
+            double tIntermediaMedia;
+            double[] tMaximas, tMinimas;
             
-            tMaximaAlta=getMaximaAlta(listaDatos);
-            tMaximaBaja=getMaximaBaja(listaDatos);
+            tMaximas=getMaximas(listaDatos);
+            tMinimas=getMinimas(listaDatos);
+            tIntermediaMedia=mediaTemperaturas(tMaximas[2], tMinimas[2]);
+            String mayorDiferenciaT=getDiferenciaT(listaDatos);
             
-            System.out.println("Tª máxima más alta y más baja:    "+tMaximaAlta+"     "+tMaximaBaja);
-            System.out.println("Tª mínima más alta y más baja:    "+tMinimaAlta+"     "+tMinimaBaja);
-            System.out.println("Tª máxima media:                  "+tMaximaMedia);
-            System.out.println("Tª mínima media:                  "+tMinimaMedia);
-            System.out.println("Tª intermedia anteriores:         "+tIntermediaMedia);
-            System.out.println("Mayor diferencia de Tª en un día: "+mayorDiferenciaT+"     "+fechaMayorDiferencia);
+            System.out.println("Tª máxima más alta y más baja:    "+String.format("%.2f", tMaximas[0])+"     "+String.format("%.2f", tMaximas[1]));
+            System.out.println("Tª mínima más alta y más baja:    "+String.format("%.2f", tMinimas[0])+"     "+String.format("%.2f", tMinimas[1]));
+            System.out.println("Tª máxima media:                  "+String.format("%.2f", tMaximas[2]));
+            System.out.println("Tª mínima media:                  "+String.format("%.2f", tMinimas[2]));
+            System.out.println("Tª intermedia anteriores:         "+String.format("%.2f", tIntermediaMedia));
+            System.out.println("Mayor diferencia de Tª en un día: "+mayorDiferenciaT);
 
             
             
