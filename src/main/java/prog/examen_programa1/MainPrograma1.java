@@ -110,6 +110,11 @@ public class MainPrograma1 {
             System.out.println("Introduce el nombre del archivo a comprobar");
             String rutaArchivo = teclado.nextLine();
             archivo = new File("resources\\tenerife\\"+rutaArchivo);
+            
+            if(!archivo.exists()){
+                System.err.println("El archivo no existe, prueba de nuevo.");
+            }
+            
         }while(!archivo.exists());
         
         try{
@@ -122,6 +127,7 @@ public class MainPrograma1 {
                 //Me deja la fecha en la posición 0, la máxima en la 1 y la mínima en la 2
                 listaDatos.add(entrada);
             }
+            //Cierro el lector.
             lectorArchivo.close();
             
             double tIntermediaMedia;
@@ -132,27 +138,20 @@ public class MainPrograma1 {
             tIntermediaMedia=mediaTemperaturas(tMaximas[2], tMinimas[2]);
             String mayorDiferenciaT=getDiferenciaT(listaDatos);
             
+            //Muestro todos los datos con formato de dos decimales
             System.out.println("Tª máxima más alta y más baja:    "+String.format("%.2f", tMaximas[0])+"     "+String.format("%.2f", tMaximas[1]));
             System.out.println("Tª mínima más alta y más baja:    "+String.format("%.2f", tMinimas[0])+"     "+String.format("%.2f", tMinimas[1]));
             System.out.println("Tª máxima media:                  "+String.format("%.2f", tMaximas[2]));
             System.out.println("Tª mínima media:                  "+String.format("%.2f", tMinimas[2]));
             System.out.println("Tª intermedia anteriores:         "+String.format("%.2f", tIntermediaMedia));
             System.out.println("Mayor diferencia de Tª en un día: "+mayorDiferenciaT);
-
             
             
         }catch (Exception e){
+            System.err.println("Algo ha salido mal");
             e.printStackTrace();
-        }finally{
-            
         }
         
-        
-        
-        
-        //Muestra por pantalla la info
-        
-        //Termina el programa
-     
+        //Se acaba el programa
     }
 }
